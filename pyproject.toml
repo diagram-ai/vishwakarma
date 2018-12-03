@@ -1,0 +1,15 @@
+[build-system]
+requires = ['flit']
+build-backend = 'flit.buildapi'
+
+[tool.flit.metadata]
+module = 'vishwakarma'
+description-file = 'README.md'
+author = 'Diagram AI'
+author-email = 'notes@diagram.ai'
+home-page = 'https://github.com/diagram-ai/vishwakarma'
+classifiers=[
+      'License :: OSI Approved :: MIT License',
+      'Operating System :: OS Independent',
+      'Programming Language :: Python :: 3',
+  ]

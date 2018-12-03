@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+'''Build visualization for a pgmpy model
+
+Example:
+
+Attributes:
+
+Todo:
+
+'''
 import pgmpy
 import jsonpickle
 import requests
@@ -9,12 +19,14 @@ from IPython.display import Image
 
 
 def pgmplot(obj, width=600):
-    '''
-    Build visualization for a pgmpy model
+    '''Build visualization for a pgmpy model
 
     Args:
-        obj (pgmpy.models): the pgmpy model that needs to be visualized
-        width (int): width of the image in px (default 600)
+        obj (pgmpy.models): The pgmpy model that needs to be visualized
+        width (int): Width of the image in px (default 600)
+
+    Returns:
+        Image: The image that can be displayed inline in a Jupyter notebook
     '''
     # list of supported classes
     supp_classes = (pgmpy.models.BayesianModel,
