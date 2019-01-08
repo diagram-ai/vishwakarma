@@ -51,7 +51,7 @@ def pgmplot(obj, width=600):
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
             url = 'http://www.diagram.ai/api/vishwakarma/pgmplot'
-            resp = requests.get(url, data=frozen_pgm)
+            resp = requests.post(url, data=frozen_pgm)
 
             if(resp.ok):
                 # get the image file and write it to temp dir

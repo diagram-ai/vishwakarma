@@ -8,7 +8,9 @@
 '''
 
 __title__ = 'vishwakarma'
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = 'diagram-ai'
 
 from .pgmplot import pgmplot
+from .pdfplot import pdfplot
+from .pmfplot import pmfplot
