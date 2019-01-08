@@ -13,8 +13,10 @@ import jsonpickle
 import requests
 import tempfile
 import os
+import random
+import shutil
 import string
-from datetime import datetime
+import datetime
 from IPython.display import Image
 
 
