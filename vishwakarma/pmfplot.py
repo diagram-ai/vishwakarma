@@ -21,6 +21,7 @@ import string
 import datetime
 from IPython.display import Image
 
+
 class pmfplot:
     ''' This class generates visualizations for discrete distributions '''
 
@@ -97,14 +98,15 @@ class pmfplot:
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
             # make the call ...
-            resp = requests.post(cls._url+cls._endpoint, data=kwargs)
+            resp = requests.post(cls._url + cls._endpoint, data=kwargs)
 
             if(resp.ok):
                 # get the image file and write it to temp dir
                 if resp.headers.get('Content-Disposition'):
                     open(tmp_file_name, 'wb').write(resp.content)
 
-                    # now return this image as an Image object displayable in a Jupyter notebook
+                    # now return this image as an Image object displayable in a
+                    # Jupyter notebook
                     return Image(filename=tmp_file_name, width=cls._width)
             else:
                 raise Exception(resp.raise_for_status())

@@ -69,4 +69,6 @@ def pgmplot(obj, width=600):
             shutil.rmtree(tmp_dir_name, ignore_errors=True)
 
     else:
-        raise TypeError('Expected pgmpy modely; unsupported object type: ' + type(obj))
+        raise TypeError(
+            'Expected pgmpy modely; unsupported object type: ' +
+            type(obj))
