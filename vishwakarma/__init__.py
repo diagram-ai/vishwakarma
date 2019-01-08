@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-    Python visualization library for Probabilistic Graphical Models, and a lot more!
+    Python visualization library for Probabilistic Graphical Models, Discrete & Continuous Distributions and a lot more!
 
     :copyright: (c) 2018 by Diagram AI.
     :license: see LICENSE for more details.

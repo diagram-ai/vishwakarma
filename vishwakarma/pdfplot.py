@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-'''Build visualization for continuous distributions
+'''
+Build visualizations for continuous distributions
+    [Uniform, Gaussian, Exponential, Gamma]
 
 Example:
+    from vishwakarma import pdfplot
+    pdfplot.gaussian(mu, sigma)
 
 Attributes:
 
@@ -15,62 +19,70 @@ import string
 from datetime import datetime
 from IPython.display import Image
 
+class pdfplot:
+    ''' This class generates visualizations for continuous distributions '''
 
-def pdfplot(dist, width=600, **kwargs):
-    '''Build visualization for continuous distributions
+    def __init__(self):
+        # setup the API endpoint to be called
+        self.url = 'http://www.diagram.ai/api/vishwakarma/'
+        self.endpoint = 'pdfplot'
+        # default width of image to be displayed
+        self.width = 600
 
-    Args:
-        dist (str): The continuous distribution that needs to be visualized
-                    ['uniform', 'gaussian', 'exponential', 'gamma']
-        width (int): Width of the image in px (default 600)
-        **kwargs: dist == 'uniform': 'a' & 'b'
-                  dist == 'gaussian': 'mu' & 'sigma'
-                  dist == 'exponential': 'lambda'
-                  dist == 'gamma': 'alpha' & 'beta'
+    def uniform(a, b, width=600):
+        '''
+        Visualization for a Uniform distribution
+        Args:
+            a, b (float): parameters to a Uniform distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='uniform', a=a, b=b)
 
-    Returns:
-        Image: The image that can be displayed inline in a Jupyter notebook
-    '''
-    if dist == 'uniform':
-        if 'a' in kwargs:
-            _a = kwargs.get('a')
-        else:
-            raise ValueError('Missing argument \'a\'\nUsage: pdfplot(dist=\'uniform\', a=<val>, b=<val>)')
-        if 'b' in kwargs:
-            _b = kwargs.get('b')
-        else:
-            raise ValueError('Missing argument \'b\'\nUsage: pdfplot(dist=\'uniform\', a=<val>, b=<val>')
-        return _call_post(dist, _a, _b)
-    elif dist == 'gaussian':
-        if 'mu' in kwargs:
-            _mu = kwargs.get('mu')
-        else:
-            raise ValueError('Missing argument \'mu\'\nUsage: pdfplot(dist=\'gaussian\', mu=<val>, sigma=<val>')
-        if 'sigma' in kwargs:
-            _sigma = kwargs.get('sigma')
-        else:
-            raise ValueError('Missing argument \'sigma\'\nUsage: pdfplot(dist=\'gaussian\', mu=<val>, sigma=<val>')
-        return _call_post(dist, _mu, _sigma)
-    elif dist == 'exponential':
-        if 'lambda' in kwargs:
-            _lambda = kwargs.get('lambda')
-        else:
-            raise ValueError('Missing argument \'lambda\'\nUsage: pdfplot(dist=\'exponential\', lambda=<val>')
-        return _call_post(dist, _lambda)
-    elif dist == 'gamma':
-        if 'alpha' in kwargs:
-            _alpha = kwargs.get('alpha')
-        else:
-            raise ValueError('Missing argument \'alpha\'\nUsage: pdfplot(dist=\'gamma\', alpha=<val>, beta=<val>')
-        if 'beta' in kwargs:
-            _beta = kwargs.get('beta')
-        else:
-            raise ValueError('Missing argument \'beta\'\nUsage: pdfplot(dist=\'gamma\', alpha=<val>, beta=<val>')
-        return _call_post(dist, _alpha, _beta)
-    else:
-        raise ValueError('Unsupported value for argument \'dist\'')
+    def gaussian(mu, sigma, width=600):
+        '''
+        Visualization for a Gaussian distribution
+        Args:
+            mu, sigma (float): parameters to a Gaussian distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='gaussian', mu=mu, sigma=sigma)
 
-    def _call_post(**kwargs):
+    def exponential(lambda, width=600):
+        '''
+        Visualization for an Exponential distribution
+        Args:
+            lambda (float): parameters to an Exponential distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='exponential', lambda=lambda)
+
+    def gamma(alpha, beta, width=600):
+        '''
+        Visualization for a Gamma distribution
+        Args:
+            alpha, beta (float): parameters to a Gamma distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='gamma', alpha=alpha, beta=beta)
+
+    def call_post(**kwargs):
+        '''
+        Calls the API hosted on www.diagram.ai
+        Args:
+            kwargs: Name and parameters of the distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        Note:
+            Internal function - not to be exposed
+        '''
         tmp_dir_name = ''
         try:
             # create a temp directory & temp file
@@ -82,20 +94,18 @@ def pdfplot(dist, width=600, **kwargs):
             tmp_file_name = os.path.join(
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
-            url = 'http://www.diagram.ai/api/vishwakarma/pdfplot'
-            resp = requests.post(url, data=kwargs)
+            # make the call ...
+            resp = requests.post(self.url+self.endpoint, data=kwargs)
 
             if(resp.ok):
                 # get the image file and write it to temp dir
                 if resp.headers.get('Content-Disposition'):
                     open(tmp_file_name, 'wb').write(resp.content)
 
-                    # now return this image as an Image object displayable in
-                    # the jupyter notebook
-                    return Image(filename=tmp_file_name, width=width)
+                    # now return this image as an Image object displayable in a Jupyter notebook
+                    return Image(filename=tmp_file_name, width=self.width)
             else:
-                raise Exception(resp.raise_for_status())
-
+                raise Exception(resp.raise_for_status(), kwargs)
         finally:
             # cleanup the temp directory
             shutil.rmtree(tmp_dir_name, ignore_errors=True)

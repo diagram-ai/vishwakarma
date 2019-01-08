@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-'''Build visualization for discrete distributions
+'''
+Build visualizations for discrete distributions
+    [Bernoulli, Binomial, Geometric, Poisson]
 
 Example:
+    from vishwakarma import pmfplot
+    pmfplot.bernoulli(k, p)
 
 Attributes:
 
@@ -15,74 +19,70 @@ import string
 from datetime import datetime
 from IPython.display import Image
 
+class pmfplot:
+    ''' This class generates visualizations for discrete distributions '''
 
-def pmfplot(dist, width=600, **kwargs):
-    '''Build visualization for discrete distributions
+    def __init__(self):
+        # setup the API endpoint to be called
+        self.url = 'http://www.diagram.ai/api/vishwakarma/'
+        self.endpoint = 'pmfplot'
+        # default width of image to be displayed
+        self.width = 600
 
-    Args:
-        dist (str): The discrete distribution that needs to be visualized
-                    ['bernoulli', 'binomial', 'geometric', 'poisson']
-        width (int): Width of the image in px (default 600)
-        **kwargs: dist == 'bernoulli': 'k' & 'p'
-                  dist == 'binomial': 'n', 'k' & 'p'
-                  dist == 'geometric': 'n' & 'p'
-                  dist == 'poisson': 'mu', 'e' & 'x'
+    def bernoulli(k, p, width=600):
+        '''
+        Visualization for a Bernoulli distribution
+        Args:
+            k, p (float): parameters to a Bernoulli distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='bernoulli', k=k, p=p)
 
-    Returns:
-        Image: The image that can be displayed inline in a Jupyter notebook
-    '''
-    if dist == 'bernoulli':
-        if 'k' in kwargs:
-            _k = kwargs.get('k')
-        else:
-            raise ValueError('Missing argument \'k\'\nUsage: pmfplot(dist=\'bernoulli\', k=<val>, p=<val>)')
-        if 'p' in kwargs:
-            _p = kwargs.get('p')
-        else:
-            raise ValueError('Missing argument \'p\'\nUsage: pmfplot(dist=\'bernoulli\', k=<val>, p=<val>')
-        return _call_post(dist, _k, _p)
-    elif dist == 'binomial':
-        if 'n' in kwargs:
-            _n = kwargs.get('n')
-        else:
-            raise ValueError('Missing argument \'n\'\nUsage: pmfplot(dist=\'binomial\', n=<val>, k=<val>, p=<val>)')
-        if 'k' in kwargs:
-            _k = kwargs.get('k')
-        else:
-            raise ValueError('Missing argument \'k\'\nUsage: pmfplot(dist=\'binomial\', n=<val>, k=<val>, p=<val>)')
-        if 'p' in kwargs:
-            _p = kwargs.get('p')
-        else:
-            raise ValueError('Missing argument \'p\'\nUsage: pmfplot(dist=\'binomial\', n=<val>, k=<val>, p=<val>')
-        return _call_post(dist, _n, _k, _p)
-    elif dist == 'geometric':
-        if 'n' in kwargs:
-            _n = kwargs.get('n')
-        else:
-            raise ValueError('Missing argument \'n\'\nUsage: pmfplot(dist=\'geometric\', n=<val>, p=<val>)')
-        if 'p' in kwargs:
-            _p = kwargs.get('p')
-        else:
-            raise ValueError('Missing argument \'p\'\nUsage: pmfplot(dist=\'geometric\', n=<val>, p=<val>')
-        return _call_post(dist, _n, _p)
-    elif dist == 'poisson':
-        if 'mu' in kwargs:
-            _mu = kwargs.get('mu')
-        else:
-            raise ValueError('Missing argument \'mu\'\nUsage: pmfplot(dist=\'poisson\', mu=<val>, e=<val>, x=<val>')
-        if 'e' in kwargs:
-            _e = kwargs.get('e')
-        else:
-            raise ValueError('Missing argument \'e\'\nUsage: pmfplot(dist=\'poisson\', mu=<val>, e=<val>, x=<val>')
-        if 'x' in kwargs:
-            _x = kwargs.get('x')
-        else:
-            raise ValueError('Missing argument \'x\'\nUsage: pmfplot(dist=\'poisson\', mu=<val>, e=<val>, x=<val>')
-        return _call_post(dist, _mu, _e, _x)
-    else:
-        raise ValueError('Unsupported value for argument \'dist\'')
+    def binomial(n, k, p, width=600):
+        '''
+        Visualization for a Binomial distribution
+        Args:
+            n, k, p (float): parameters to a Binomial distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='binomial', n=n, k=k, p=p)
 
-    def _call_post(**kwargs):
+    def geometric(n, p, width=600):
+        '''
+        Visualization for a Geometric distribution
+        Args:
+            n, p (float): parameters to a Geometric distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='geometric', n=n, p=p)
+
+    def poisson(mu, e, x, width=600):
+        '''
+        Visualization for a Poisson distribution
+        Args:
+            mu, sigma (float): parameters to a Poisson distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        '''
+        self.width = width
+        return call_post(dist='poisson', mu=mu, e=e, x=x)
+
+    def call_post(**kwargs):
+        '''
+        Calls the API hosted on www.diagram.ai
+        Args:
+            kwargs: Name and parameters of the distribution
+        Returns:
+            image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
+        Note:
+            Internal function - not to be exposed
+        '''
         tmp_dir_name = ''
         try:
             # create a temp directory & temp file
@@ -94,20 +94,18 @@ def pmfplot(dist, width=600, **kwargs):
             tmp_file_name = os.path.join(
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
-            url = 'http://www.diagram.ai/api/vishwakarma/pmfplot'
-            resp = requests.post(url, data=kwargs)
+            # make the call ...
+            resp = requests.post(self.url+self.endpoint, data=kwargs)
 
             if(resp.ok):
                 # get the image file and write it to temp dir
                 if resp.headers.get('Content-Disposition'):
                     open(tmp_file_name, 'wb').write(resp.content)
 
-                    # now return this image as an Image object displayable in
-                    # the jupyter notebook
-                    return Image(filename=tmp_file_name, width=width)
+                    # now return this image as an Image object displayable in a Jupyter notebook
+                    return Image(filename=tmp_file_name, width=self.width)
             else:
-                raise Exception(resp.raise_for_status())
-
+                raise Exception(resp.raise_for_status(), kwargs)
         finally:
             # cleanup the temp directory
             shutil.rmtree(tmp_dir_name, ignore_errors=True)
