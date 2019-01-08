@@ -15,21 +15,23 @@ Todo:
 import requests
 import tempfile
 import os
+import random
+import shutil
 import string
-from datetime import datetime
+import datetime
 from IPython.display import Image
 
 class pdfplot:
     ''' This class generates visualizations for continuous distributions '''
 
-    def __init__(self):
-        # setup the API endpoint to be called
-        self.url = 'http://www.diagram.ai/api/vishwakarma/'
-        self.endpoint = 'pdfplot'
-        # default width of image to be displayed
-        self.width = 600
+    # setup the API endpoint to be called
+    _url = 'http://www.diagram.ai/api/vishwakarma/'
+    _endpoint = 'pdfplot'
+    # default width of image to be displayed
+    _width = 600
 
-    def uniform(a, b, width=600):
+    @classmethod
+    def uniform(cls, a, b):
         '''
         Visualization for a Uniform distribution
         Args:
@@ -37,10 +39,10 @@ class pdfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='uniform', a=a, b=b)
+        return cls._call_post(dist='uniform', a=a, b=b)
 
-    def gaussian(mu, sigma, width=600):
+    @classmethod
+    def gaussian(cls, mu, sigma):
         '''
         Visualization for a Gaussian distribution
         Args:
@@ -48,21 +50,21 @@ class pdfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='gaussian', mu=mu, sigma=sigma)
+        return cls._call_post(dist='gaussian', mu=mu, sigma=sigma)
 
-    def exponential(lambda, width=600):
+    @classmethod
+    def exponential(cls, lam):
         '''
         Visualization for an Exponential distribution
         Args:
-            lambda (float): parameters to an Exponential distribution
+            lam (float): parameter to an Exponential distribution
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='exponential', lambda=lambda)
+        return cls._call_post(dist='exponential', lam=lam)
 
-    def gamma(alpha, beta, width=600):
+    @classmethod
+    def gamma(cls, alpha, beta):
         '''
         Visualization for a Gamma distribution
         Args:
@@ -70,10 +72,10 @@ class pdfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='gamma', alpha=alpha, beta=beta)
+        return cls._call_post(dist='gamma', alpha=alpha, beta=beta)
 
-    def call_post(**kwargs):
+    @classmethod
+    def _call_post(cls, **kwargs):
         '''
         Calls the API hosted on www.diagram.ai
         Args:
@@ -95,7 +97,7 @@ class pdfplot:
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
             # make the call ...
-            resp = requests.post(self.url+self.endpoint, data=kwargs)
+            resp = requests.post(cls._url+cls._endpoint, data=kwargs)
 
             if(resp.ok):
                 # get the image file and write it to temp dir
@@ -103,9 +105,9 @@ class pdfplot:
                     open(tmp_file_name, 'wb').write(resp.content)
 
                     # now return this image as an Image object displayable in a Jupyter notebook
-                    return Image(filename=tmp_file_name, width=self.width)
+                    return Image(filename=tmp_file_name, width=cls._width)
             else:
-                raise Exception(resp.raise_for_status(), kwargs)
+                raise Exception(resp.raise_for_status())
         finally:
             # cleanup the temp directory
             shutil.rmtree(tmp_dir_name, ignore_errors=True)

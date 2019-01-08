@@ -15,21 +15,23 @@ Todo:
 import requests
 import tempfile
 import os
+import random
+import shutil
 import string
-from datetime import datetime
+import datetime
 from IPython.display import Image
 
 class pmfplot:
     ''' This class generates visualizations for discrete distributions '''
 
-    def __init__(self):
-        # setup the API endpoint to be called
-        self.url = 'http://www.diagram.ai/api/vishwakarma/'
-        self.endpoint = 'pmfplot'
-        # default width of image to be displayed
-        self.width = 600
+    # setup the API endpoint to be called
+    _url = 'http://www.diagram.ai/api/vishwakarma/'
+    _endpoint = 'pmfplot'
+    # default width of image to be displayed
+    _width = 600
 
-    def bernoulli(k, p, width=600):
+    @classmethod
+    def bernoulli(cls, k, p):
         '''
         Visualization for a Bernoulli distribution
         Args:
@@ -37,10 +39,10 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='bernoulli', k=k, p=p)
+        return cls._call_post(dist='bernoulli', k=k, p=p)
 
-    def binomial(n, k, p, width=600):
+    @classmethod
+    def binomial(cls, n, k, p):
         '''
         Visualization for a Binomial distribution
         Args:
@@ -48,10 +50,10 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='binomial', n=n, k=k, p=p)
+        return cls._call_post(dist='binomial', n=n, k=k, p=p)
 
-    def geometric(n, p, width=600):
+    @classmethod
+    def geometric(cls, n, p):
         '''
         Visualization for a Geometric distribution
         Args:
@@ -59,10 +61,10 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='geometric', n=n, p=p)
+        return cls._call_post(dist='geometric', n=n, p=p)
 
-    def poisson(mu, e, x, width=600):
+    @classmethod
+    def poisson(cls, mu, e, x):
         '''
         Visualization for a Poisson distribution
         Args:
@@ -70,10 +72,10 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        self.width = width
-        return call_post(dist='poisson', mu=mu, e=e, x=x)
+        return cls._call_post(dist='poisson', mu=mu, e=e, x=x)
 
-    def call_post(**kwargs):
+    @classmethod
+    def _call_post(cls, **kwargs):
         '''
         Calls the API hosted on www.diagram.ai
         Args:
@@ -95,7 +97,7 @@ class pmfplot:
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
             # make the call ...
-            resp = requests.post(self.url+self.endpoint, data=kwargs)
+            resp = requests.post(cls._url+cls._endpoint, data=kwargs)
 
             if(resp.ok):
                 # get the image file and write it to temp dir
@@ -103,9 +105,9 @@ class pmfplot:
                     open(tmp_file_name, 'wb').write(resp.content)
 
                     # now return this image as an Image object displayable in a Jupyter notebook
-                    return Image(filename=tmp_file_name, width=self.width)
+                    return Image(filename=tmp_file_name, width=cls._width)
             else:
-                raise Exception(resp.raise_for_status(), kwargs)
+                raise Exception(resp.raise_for_status())
         finally:
             # cleanup the temp directory
             shutil.rmtree(tmp_dir_name, ignore_errors=True)
