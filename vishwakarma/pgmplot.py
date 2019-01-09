@@ -52,7 +52,7 @@ def pgmplot(obj, width=600):
             tmp_file_name = os.path.join(
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
-            url = 'http://www.diagram.ai/api/vishwakarma/pgmplot'
+            url = 'http://api.diagram.ai/vishwakarma/pgmplot'
             resp = requests.post(url, data=frozen_pgm)
 
             if(resp.ok):
