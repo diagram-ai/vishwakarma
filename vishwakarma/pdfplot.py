@@ -27,7 +27,7 @@ class pdfplot:
 
     # setup the API endpoint to be called
     _url = 'http://api.diagram.ai/vishwakarma/'
-    _endpoint = 'pdfplot'
+    _endpoint = 'pdfplot/'
     # default width of image to be displayed
     _width = 600
 
@@ -102,9 +102,8 @@ class pdfplot:
 
             if(resp.ok):
                 # get the image file and write it to temp dir
-                if resp.headers.get('Content-Disposition'):
+                if resp.headers.get('Content-Type') == 'image/png':
                     open(tmp_file_name, 'wb').write(resp.content)
-
                     # now return this image as an Image object displayable in a
                     # Jupyter notebook
                     return Image(filename=tmp_file_name, width=cls._width)

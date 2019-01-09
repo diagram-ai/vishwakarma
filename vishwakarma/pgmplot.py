@@ -52,14 +52,13 @@ def pgmplot(obj, width=600):
             tmp_file_name = os.path.join(
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
-            url = 'http://api.diagram.ai/vishwakarma/pgmplot'
+            url = 'http://api.diagram.ai/vishwakarma/pgmplot/'
             resp = requests.post(url, data=frozen_pgm)
 
             if(resp.ok):
                 # get the image file and write it to temp dir
-                if resp.headers.get('Content-Disposition'):
+                if resp.headers.get('Content-Type') == 'image/png':
                     open(tmp_file_name, 'wb').write(resp.content)
-
                     # now return this image as an Image object displayable in
                     # the jupyter notebook
                     return Image(filename=tmp_file_name, width=width)
