@@ -11,7 +11,7 @@ README = (HERE / 'README.md').read_text()
 setup(
     name='vishwakarma',
     version='0.0.4',
-    description='Python visualization library for Probabilistic Graphical Models, and a lot more!',
+    description='Python visualization library for Probabilistic Graphical Models, Discrete & Continuous Distributions, and a lot more!',
     long_description=README,
     long_description_content_type='text/markdown',
     url='https://github.com/diagram-ai/vishwakarma',
@@ -21,10 +21,15 @@ setup(
     maintainer_email='notes@diagram.ai',
     license='MIT',
     keywords=[
+	'probability-distribution',
+	'discrete-distribution',
+	'continuous-distribution',
+	'pdf', 'pdfplot',
+	'pmf', 'pmfplot',
         'PGM',
         'pgmpy',
         'visualization',
-        'probabilistic-graphical-models',
+        'probabilistic-graphical-model',
     ],
     classifiers=[
         'License :: OSI Approved :: MIT License',
