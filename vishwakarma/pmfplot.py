@@ -98,7 +98,7 @@ class pmfplot:
                 tmp_dir_name, tmp_file_name + epoch + '.png')
 
             # make the call ...
-            resp = requests.post(cls._url + cls._endpoint, data=kwargs)
+            resp = requests.post(cls._url + cls._endpoint, json=kwargs)
 
             if(resp.ok):
                 # get the image file and write it to temp dir
