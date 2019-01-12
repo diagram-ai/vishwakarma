@@ -43,7 +43,7 @@ class pmfplot:
         return cls._call_post(dist='bernoulli', k=k, p=p)
 
     @classmethod
-    def binomial(cls, n, k, p):
+    def binomial(cls, k, n, p):
         '''
         Visualization for a Binomial distribution
         Args:
@@ -51,7 +51,7 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        return cls._call_post(dist='binomial', n=n, k=k, p=p)
+        return cls._call_post(dist='binomial', k=k, n=n, p=p)
 
     @classmethod
     def geometric(cls, n, p):
@@ -65,7 +65,7 @@ class pmfplot:
         return cls._call_post(dist='geometric', n=n, p=p)
 
     @classmethod
-    def poisson(cls, mu, e, x):
+    def poisson(cls, mu, x):
         '''
         Visualization for a Poisson distribution
         Args:
@@ -73,7 +73,7 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
-        return cls._call_post(dist='poisson', mu=mu, e=e, x=x)
+        return cls._call_post(dist='poisson', mu=mu, x=x)
 
     @classmethod
     def _call_post(cls, **kwargs):
