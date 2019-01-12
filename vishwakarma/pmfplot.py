@@ -47,7 +47,7 @@ class pmfplot:
         '''
         Visualization for a Binomial distribution
         Args:
-            n, k, p (float): parameters to a Binomial distribution
+            k, n, p (float): parameters to a Binomial distribution
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
@@ -69,7 +69,7 @@ class pmfplot:
         '''
         Visualization for a Poisson distribution
         Args:
-            mu, sigma (float): parameters to a Poisson distribution
+            mu, x (float): parameters to a Poisson distribution
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
