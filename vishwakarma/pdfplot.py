@@ -36,11 +36,18 @@ class pdfplot:
         '''
         Visualization for a Uniform distribution
         Args:
-            a, b (float): parameters to a Uniform distribution
+            a, b (int): parameters to a Uniform distribution
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if not isinstance(a, int):
+            raise ValueError('For a Uniform distribution, a should always be an integer.')
+        if not isinstance(b, int):
+            raise ValueError('For a Uniform distribution, b should always be an integer.')
+        if b <= a:
+            raise ValueError('For a Uniform distribution, b should always be greater than a.')
         return cls._call_post(dist='uniform', a=a, b=b)
+            
 
     @classmethod
     def gaussian(cls, mu, sigma):
@@ -51,6 +58,8 @@ class pdfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if sigma <= 0:
+            raise ValueError('For a Gaussian distribution, sigma should be greater than zero.')
         return cls._call_post(dist='gaussian', mu=mu, sigma=sigma)
 
     @classmethod
@@ -62,6 +71,8 @@ class pdfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if lam <= 0:
+            raise ValueError('For an Exponential distribution, lambda should be greater than zero.')
         return cls._call_post(dist='exponential', lam=lam)
 
     @classmethod
@@ -73,6 +84,10 @@ class pdfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if alpha <= 0:
+            raise ValueError('For a Gamma distribution, alpha should be greater than zero.')
+        if beta <= 0:
+            raise ValueError('For a Gamma distribution, beta should be greater than zero.')
         return cls._call_post(dist='gamma', alpha=alpha, beta=beta)
 
     @classmethod

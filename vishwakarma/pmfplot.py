@@ -40,6 +40,10 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if k not in (0,1):
+            raise ValueError('For a Bernoulli distribution, k should always be either 0 or 1.')
+        if not 0 <= p <= 1:
+            raise ValueError('For a Bernoulli distribution, p should always be between 0 and 1.')
         return cls._call_post(dist='bernoulli', k=k, p=p)
 
     @classmethod
@@ -51,6 +55,16 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if not isinstance(k, int):
+            raise ValueError('For a Binomial distribution, k should always be an integer.')
+        if not isinstance(n, int):
+            raise ValueError('For a Binomial distribution, n should always be an integer.')
+        if n < 0:
+            raise ValueError('For a Binomial distribution, n should be greater than or equal to zero.')
+        if not 0 <= k <= n:
+            raise ValueError('For a Binomial distribution, k should always be between 0 and n.')
+        if not 0 <= p <= 1:
+            raise ValueError('For a Binomial distribution, p should always be between 0 and 1.')
         return cls._call_post(dist='binomial', k=k, n=n, p=p)
 
     @classmethod
@@ -62,6 +76,12 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if not isinstance(n, int):
+            raise ValueError('For a Geometric distribution, n should always be an integer.')
+        if n < 0:
+            raise ValueError('For a Geometric distribution, n should be greater than or equal to zero.')
+        if not 0 <= p <= 1:
+            raise ValueError('For a Geometric distribution, p should always be between 0 and 1.')
         return cls._call_post(dist='geometric', n=n, p=p)
 
     @classmethod
@@ -73,6 +93,12 @@ class pmfplot:
         Returns:
             image (IPython.display.Image): The image that can be displayed inline in a Jupyter notebook
         '''
+        if not isinstance(x, int):
+            raise ValueError('For a Poisson distribution, x should always be an integer.')
+        if x < 0:
+            raise ValueError('For a Poisson distribution, x should be greater than or equal to zero.')
+        if mu <= 0:
+            raise ValueError('For a Poisson distribution, mu should be greater than zero.')
         return cls._call_post(dist='poisson', mu=mu, x=x)
 
     @classmethod
