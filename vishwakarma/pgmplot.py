@@ -10,6 +10,7 @@ Todo:
 '''
 import pgmpy
 import jsonpickle
+import pickle
 import requests
 import tempfile
 import os
@@ -41,7 +42,7 @@ def pgmplot(obj, width=600):
         tmp_dir_name = ''
         try:
             # get json representation of the object
-            frozen_pgm = jsonpickle.encode(obj)
+            frozen_pgm = jsonpickle.encode(pickle.dumps(obj))
 
             # create a temp directory & temp file
             tmp_dir_name = tempfile.mkdtemp()
