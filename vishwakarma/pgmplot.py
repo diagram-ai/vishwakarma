@@ -41,9 +41,6 @@ def pgmplot(obj, width=600):
     if isinstance(obj, supp_classes):
         tmp_dir_name = ''
         try:
-            # get json representation of the object
-            frozen_pgm = jsonpickle.encode(pickle.dumps(obj))
-
             # create a temp directory & temp file
             tmp_dir_name = tempfile.mkdtemp()
             # generate a tmp file name (excluding file extension)
@@ -52,9 +49,16 @@ def pgmplot(obj, width=600):
                 [random.choice(string.ascii_letters + string.digits) for n in range(8)])
             tmp_file_name = os.path.join(
                 tmp_dir_name, tmp_file_name + epoch + '.png')
+            tmp_pkl_file_name = os.path.join(
+                tmp_dir_name, tmp_file_name + epoch + '.pkl')
+
+            # serialize the object
+            pickle_out = open(tmp_pkl_file_name,"wb")
+            pickle.dump(obj, pickle_out)
+            pickle_out.close()
 
             url = 'http://api.diagram.ai/vishwakarma/pgmplot/'
-            resp = requests.post(url, json=frozen_pgm)
+            resp = requests.post(url, json={'pkl_path':tmp_pkl_file_name})
 
             if(resp.ok):
                 # get the image file and write it to temp dir
