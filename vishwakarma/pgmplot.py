@@ -53,12 +53,12 @@ def pgmplot(obj, width=600):
                 tmp_dir_name, tmp_file_name + epoch + '.pkl')
 
             # serialize the object
-            pickle_out = open(tmp_pkl_file_name,"wb")
-            pickle.dump(obj, pickle_out)
-            pickle_out.close()
+            data = pickle.dumps(obj)
 
             url = 'http://api.diagram.ai/vishwakarma/pgmplot/'
-            resp = requests.post(url, json={'pkl_path':tmp_pkl_file_name})
+
+            resp = requests.post(url,data=data,
+                    headers={'Content-Type': 'application/octet-stream'})
 
             if(resp.ok):
                 # get the image file and write it to temp dir
