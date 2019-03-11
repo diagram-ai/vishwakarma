@@ -10,7 +10,7 @@ README = (HERE / 'README.md').read_text()
 # This call to setup() does all the work
 setup(
     name='vishwakarma',
-    version='0.0.9',
+    version='0.1.0',
     description='Python visualization library for Probabilistic Graphical Models, Discrete & Continuous Distributions, and a lot more!',
     long_description=README,
     long_description_content_type='text/markdown',
