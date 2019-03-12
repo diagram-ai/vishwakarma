@@ -47,7 +47,7 @@ class pdfplot:
         if b <= a:
             raise ValueError('For a Uniform distribution, b should always be greater than a.')
         return cls._call_post(dist='uniform', a=a, b=b)
-            
+
 
     @classmethod
     def gaussian(cls, mu, sigma):
@@ -63,7 +63,7 @@ class pdfplot:
         return cls._call_post(dist='gaussian', mu=mu, sigma=sigma)
 
     @classmethod
-    def exponential(cls, lam):
+    def exponential(cls, lam, sam):
         '''
         Visualization for an Exponential distribution
         Args:
@@ -73,7 +73,7 @@ class pdfplot:
         '''
         if lam <= 0:
             raise ValueError('For an Exponential distribution, lambda should be greater than zero.')
-        return cls._call_post(dist='exponential', lam=lam)
+        return cls._call_post(dist='exponential', lam=lam, sam=sam)
 
     @classmethod
     def gamma(cls, alpha, beta):
