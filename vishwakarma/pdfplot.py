@@ -26,7 +26,7 @@ class pdfplot:
     ''' This class generates visualizations for continuous distributions '''
 
     # setup the API endpoint to be called
-    _url = 'http://ec2-3-136-87-27.us-east-2.compute.amazonaws.com/vishwakarma/'
+    _url = 'http://api.diagram.ai/vishwakarma/'
     _endpoint = 'pdfplot/'
     # default width of image to be displayed
     _width = 600

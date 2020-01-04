@@ -55,7 +55,7 @@ def pgmplot(obj, width=600):
             # serialize the object
             data = pickle.dumps(obj)
 
-            _url = 'http://ec2-3-136-87-27.us-east-2.compute.amazonaws.com/vishwakarma/'
+            _url = 'http://api.diagram.ai/vishwakarma/pgmplot/'
             
             resp = requests.post(url,data=data,
                     headers={'Content-Type': 'application/octet-stream'})
