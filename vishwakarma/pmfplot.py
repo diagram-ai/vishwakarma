@@ -26,6 +26,7 @@ class pmfplot:
     ''' This class generates visualizations for discrete distributions '''
 
     # setup the API endpoint to be called
+#    http://ec2-3-136-87-27.us-east-2.compute.amazonaws.com/vishwakarma/
     _url = 'http://api.diagram.ai/vishwakarma/'
     _endpoint = 'pmfplot/'
     # default width of image to be displayed

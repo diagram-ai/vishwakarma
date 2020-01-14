@@ -14,3 +14,4 @@ __author__ = 'diagram-ai'
 from .pgmplot import pgmplot
 from .pdfplot import pdfplot
 from .pmfplot import pmfplot
+from .activetrail import activetrail

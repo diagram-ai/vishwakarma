@@ -15,13 +15,15 @@ import requests
 import tempfile
 import os
 import random
+import json
+import pandas as pd
 import shutil
 import string
 import datetime
 from IPython.display import Image
 
 
-def pgmplot(obj, width=600):
+def activetrail(obj,node,observed_node, width=600):
     '''Build visualization for a pgmpy model
 
     Args:
@@ -33,10 +35,7 @@ def pgmplot(obj, width=600):
     '''
     # list of supported classes
     supp_classes = (pgmpy.models.BayesianModel,
-                    pgmpy.models.NaiveBayes,
-                    pgmpy.models.MarkovModel,
-                    pgmpy.models.FactorGraph,
-                    pgmpy.models.DynamicBayesianNetwork)
+                    pgmpy.models.NaiveBayes)
 
     if isinstance(obj, supp_classes):
         tmp_dir_name = ''
@@ -54,9 +53,16 @@ def pgmplot(obj, width=600):
 
             # serialize the object
             data = pickle.dumps(obj)
+            
+            json_data = {"data":data,"node":node,"observed_node":observed_node}
+            
+            json_data = pickle.dumps(json_data)
 
-            url = 'http://api.diagram.ai/vishwakarma/pgmplot/'
-            resp = requests.post(url,data=data,
+
+            url = 'http://api.diagram.ai/vishwakarma/activetrail/'
+            endpoint = 'activetrail/'
+
+            resp = requests.post(url,data=json_data,
                     headers={'Content-Type': 'application/octet-stream'})
 
             if(resp.ok):
