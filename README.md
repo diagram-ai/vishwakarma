@@ -3,6 +3,6 @@ Python visualization library for Probabilistic Graphical Models, Discrete & Cont
 www.diagram.ai
 
 # Installation
-pip install vishwakarma
+'''pip install vishwakarma'''
 or
-python setup.py install
+'''python setup.py install
