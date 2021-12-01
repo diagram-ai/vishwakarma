@@ -4,14 +4,14 @@ www.diagram.ai
 
 # Installation
 ```
-  pip install vishwakarma <br>
-          (or) <br>
-  python setup.py install <br>
+  pip install vishwakarma
+          (or)
+  python setup.py install
 ```
 
 # Using Anaconda setup
 ```
-   conda create -n vishwakarma python==3.7 <br>
-   conda activate vishwakarma <br>
-   pip install -r requirements.txt <br>
+   conda create -n vishwakarma python==3.7
+   conda activate vishwakarma
+   pip install -r requirements.txt
 ```
