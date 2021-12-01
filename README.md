@@ -3,11 +3,11 @@ Python visualization library for Probabilistic Graphical Models, Discrete & Cont
 www.diagram.ai
 
 # Installation
-  pip install vishwakarma \n
-          (or) \n
+  pip install vishwakarma
+          (or)
   python setup.py install
 
 # Using Anaconda setup
-   conda create -n vishwakarma python==3.7 \n
-   conda activate vishwakarma \n
+   conda create -n vishwakarma python==3.7
+   conda activate vishwakarma
    pip install -r requirements.txt
