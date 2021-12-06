@@ -59,7 +59,7 @@ def activetrail(obj,node,observed_node, width=600):
             json_data = pickle.dumps(json_data)
 
 
-            url = 'http://3.235.31.158/vishwakarma/activetrail/'
+            url = 'http://3.239.3.52:5000/vishwakarma/activetrail/'
             endpoint = 'activetrail/'
 
             resp = requests.post(url,data=json_data,
